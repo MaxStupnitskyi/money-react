@@ -228,7 +228,7 @@ export default class App extends React.Component {
 	render() {
 		const id = this.generateID();
 		return (
-			<Router basename={'learning-React/money'}>
+			<Router basename={'money-react'}>
 				<div className="app">
 					<Header />
 					<Switch>

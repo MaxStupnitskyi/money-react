@@ -1,6 +1,6 @@
 {
 	"name": "money",
-	"homepage": "https://maxstupnitskyi.github.io/learning-React/money",
+	"homepage": "https://maxstupnitskyi.github.io/money-react",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
@@ -17,7 +17,9 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -40,6 +42,7 @@
 	"devDependencies": {
 		"axios": "^0.21.1",
 		"react-router-dom": "^5.2.0",
-		"sass": "^1.32.8"
+		"sass": "^1.32.8",
+		"gh-pages": "^3.1.0"
 	}
 }
