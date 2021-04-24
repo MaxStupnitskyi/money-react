@@ -1,0 +1,74 @@
+.transactions
+
+    &__item
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding: 6px 10px
+        position: relative
+        width: 100%
+        text-align: left
+        cursor: pointer
+
+        &:not(:last-child)
+            border-bottom: 1px solid #fff
+
+        &__cat
+            font-size: 0.9rem
+
+        &__date
+            font-size: 0.8rem
+            font-weight: 200
+
+        &__price
+            padding: 4px 6px
+            border-radius: 5px
+            color: #01204e
+            min-width: 70px
+            text-align: center
+
+            &.expence
+                background-color: #FFD700
+
+            &.income
+                background-color: #10cee7
+
+    &__popover
+        position: absolute
+        left: 50%
+        transform: translateX(-50%)
+        top: 67px
+        background-color: #0c7c9e
+        border-radius: 5px
+        padding: 2px
+        display: none
+        padding: 14px 20px
+        z-index: 2
+        color: #fff
+        cursor: default
+
+        &::before
+            content: ''
+            position: absolute
+            top: -10px
+            left: 50%
+            margin-left: -10px
+            width: 0
+            height: 0
+            border-style: solid
+            border-width: 0 10px 10px 10px
+            border-color: transparent transparent #0c7c9e transparent
+
+        &.visible
+            display: block
+
+        &__button
+            display: block
+            width: 100%
+            margin-bottom: 10px
+
+    &__filter
+        margin-bottom: 20px
+
+    &__none
+        font-weight: 300

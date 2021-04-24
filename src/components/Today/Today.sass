@@ -1,0 +1,24 @@
+@import './Calendar.sass'
+
+.today
+    display: flex
+    gap: 20px
+
+    &__transactions
+        width: 40%
+
+    .react-calendar
+        width: 25%
+
+        &__tile
+            position: relative
+
+            .mark
+                width: 3px
+                height: 3px
+                border-radius: 50%
+                background-color: #15f700
+                position: absolute
+                left: 50%
+                margin-left: -1.5px
+                bottom: 4px
