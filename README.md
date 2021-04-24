@@ -1,1 +1,1 @@
-[DEMO](https://maxstupnitskyi.github.io/learning-React/money/)
+[DEMO](https://maxstupnitskyi.github.io/money-react/)
