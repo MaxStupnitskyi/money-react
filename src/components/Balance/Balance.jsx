@@ -17,12 +17,18 @@ export default class Balance extends React.Component {
 
 		deleteAccount: false,
 		deletedAccount: null,
+
+		showError: 'hidden',
 	};
 
-	onAccountAdded(e) {
+	async onAccountAdded(e) {
 		e.preventDefault();
-		this.props.onAccountAdded({ title: this.state.title, balance: this.state.balance });
-		this.setState({ title: '', balance: '' });
+		const account = await this.props.accounts.find(acc => acc.title === this.state.title);
+		this.setState({ showError: account ? '' : 'hidden' });
+		if (this.state.showError !== '') {
+			this.props.onAccountAdded({ title: this.state.title, balance: this.state.balance });
+			this.setState({ title: '', balance: '', showError: 'hidden' });
+		}
 	}
 
 	componentDidUpdate() {
@@ -53,7 +59,7 @@ export default class Balance extends React.Component {
 					<div>
 						<div className="account__title">{acc.title}</div>
 						<div className="account__balance">
-							{String(acc.balance).includes('.') ? acc.balance.toFixed(2) : acc.balance}
+							{String(acc.balance).includes('.') ? Number(acc.balance).toFixed(2) : acc.balance}
 						</div>
 					</div>
 					<div>
@@ -92,6 +98,9 @@ export default class Balance extends React.Component {
 								value={this.state.title}
 								onChange={e => this.setState({ title: e.target.value })}
 							/>
+							<div className={`error-msg ${this.state.showError}`}>
+								Please, use unique name for account
+							</div>
 							<input
 								type="text"
 								required

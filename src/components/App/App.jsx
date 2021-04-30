@@ -37,6 +37,8 @@ export default class App extends React.Component {
 		deleteCategory: false,
 		deletedCategory: null,
 		moveTransactionsTo: null,
+
+		showError: 'hidden',
 	};
 
 	onAddedTransaction(t) {
@@ -75,32 +77,49 @@ export default class App extends React.Component {
 		this.setState({ addNewCategory: true, newCategoryType: type });
 	}
 
-	addCategory(e) {
+	/* async onAccountAdded(e) {
 		e.preventDefault();
-		this.setState(state => {
-			let categories = state.categories;
-			if (state.newCategoryType === 'income') {
-				categories = {
-					expences: state.categories.expences,
-					incomes: [...state.categories.incomes, state.addCategoryValue],
-				};
-			}
-			if (state.newCategoryType === 'expence') {
-				categories = {
-					expences: [...state.categories.expences, state.addCategoryValue],
-					incomes: state.categories.incomes,
-				};
-			}
+		const account = await this.props.accounts.find(acc => acc.title === this.state.title);
+		this.setState({ showError: account ? '' : 'hidden' });
+		if (this.state.showError !== '') {
+			this.props.onAccountAdded({ title: this.state.title, balance: this.state.balance });
+			this.setState({ title: '', balance: '', showError: 'hidden' });
+		}
+	} */
 
-			localStorage.setItem('categories', JSON.stringify(categories));
+	async addCategory(e) {
+		e.preventDefault();
+		const category = await this.state.categories[`${this.state.newCategoryType}s`].find(
+			cat => cat === this.state.addCategoryValue
+		);
+		this.setState({ showError: category ? '' : 'hidden' });
 
-			return {
-				categories: categories,
-				addNewCategory: false,
-				newCategoryType: null,
-				addCategoryValue: '',
-			};
-		});
+		if (this.state.showError !== '') {
+			this.setState(state => {
+				let categories = state.categories;
+				if (state.newCategoryType === 'income') {
+					categories = {
+						expences: state.categories.expences,
+						incomes: [...state.categories.incomes, state.addCategoryValue],
+					};
+				}
+				if (state.newCategoryType === 'expence') {
+					categories = {
+						expences: [...state.categories.expences, state.addCategoryValue],
+						incomes: state.categories.incomes,
+					};
+				}
+
+				localStorage.setItem('categories', JSON.stringify(categories));
+
+				return {
+					categories: categories,
+					addNewCategory: false,
+					newCategoryType: null,
+					addCategoryValue: '',
+				};
+			});
+		}
 	}
 
 	generateID() {
@@ -108,24 +127,20 @@ export default class App extends React.Component {
 	}
 
 	onCategoryDeleted(cat) {
-		this.setState(
-			state => {
-				return {
-					deleteCategory: !this.state.deleteCategory,
-					deletedCategory: cat,
-					moveTransactionsTo:
-						state.categories[cat[0]][0] !== cat[1]
-							? state.categories[cat[0]][0]
-							: state.categories[cat[0]][1],
-				};
-			},
-			() => console.log(this.state.categories[this.state.deletedCategory[0]].length)
-		);
+		this.setState(state => {
+			return {
+				deleteCategory: !this.state.deleteCategory,
+				deletedCategory: cat,
+				moveTransactionsTo:
+					state.categories[cat[0]][0] !== cat[1]
+						? state.categories[cat[0]][0]
+						: state.categories[cat[0]][1],
+			};
+		});
 	}
 
-	deleteCategory(e, [type, cat, total], to) {
+	deleteCategory(e, [type, cat], to) {
 		e.preventDefault();
-		console.log(type, cat, total);
 
 		const deleted = this.state.categories[type].findIndex(i => i === cat);
 
@@ -283,6 +298,9 @@ export default class App extends React.Component {
 										value={this.state.addCategoryValue}
 										onChange={e => this.setState({ addCategoryValue: e.target.value })}
 									/>
+									<div className={`error-msg ${this.state.showError}`}>
+										Please, use unique name for category
+									</div>
 									<button type="submit" className="button modal__button">
 										Add
 									</button>
